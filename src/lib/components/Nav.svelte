@@ -1,13 +1,26 @@
 <script>
+	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
+	import { logout } from "$lib/firebase/auth.client";
+	import authStore from "$lib/stores/auth.store";
+	import messageStore from "$lib/stores/message.store";
 
-    let isLoggedIn = false;
     let openNavbar = false;
     $: currentPage = $page.url.pathname;
 
     function changeNavbar(){
         openNavbar = !openNavbar;
     }
+
+	async function onLogout(){
+		try {
+			await logout();
+			goto('/');
+		} catch (error) {
+			console.log(error);
+			messageStore.showError();
+		}
+	}
 </script>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -27,7 +40,7 @@
 		</button>
 		<div class:show = {openNavbar} class="collapse navbar-collapse" id="navbarNav">             
             <ul class="navbar-nav">
-                {#if isLoggedIn}
+                {#if $authStore.isLoggedIn}
     				<li class="nav-item">
     					<a class:active = {currentPage == '/'} class="nav-link" aria-current="page" href="/">Home</a>
 				    </li>
@@ -41,7 +54,9 @@
     					<a class:active = {currentPage == '/about'} class="nav-link" href="/about">About</a>
 	    			</li>
 		    		<li class="nav-item">
-			    		<span class="nav-link">Logout</span>
+			    		<!-- svelte-ignore a11y-click-events-have-key-events -->
+			    		<!-- svelte-ignore a11y-no-static-element-interactions -->
+			    		<span class="nav-link" on:click={onLogout}>Logout</span>
 				    </li>              
                 {:else}
 				    <!-- Not Logged In -->

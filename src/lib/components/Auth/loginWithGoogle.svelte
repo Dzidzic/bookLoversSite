@@ -1,4 +1,5 @@
 <script>
+	import { goto } from '$app/navigation';
     import '$lib/firebase/auth.client';
 	import { loginWithGoogle } from '$lib/firebase/auth.client';
 	import messageStore from '$lib/stores/message.store';
@@ -6,7 +7,7 @@
     async function loginGoogle() {
         try {
             const user = await loginWithGoogle();
-            console.log(user);
+            goto('/');
         } catch (e) {
             // @ts-ignore
             if(e.code === 'auth.popup-closed-by-user'){
