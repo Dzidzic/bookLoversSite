@@ -1,4 +1,5 @@
 <script>
+	import { goto } from "$app/navigation";
 	import AuthForm from "$lib/components/Auth/AuthForm.svelte";
 	import { resetPassword } from "$lib/firebase/auth.client";
 	import messageStore from "$lib/stores/message.store";
@@ -10,6 +11,7 @@
             const email = formData.get('email');
             await resetPassword(email);
             messageStore.showSucces('Email send!')
+            goto('login');
         } catch (error) {
             // @ts-ignore
             console.log(error.code);

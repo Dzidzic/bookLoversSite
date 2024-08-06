@@ -3,7 +3,8 @@
     import LoginWithGoogle from "$lib/components/Auth/LoginWithGoogle.svelte";
     import messageStore from "$lib/stores/message.store";
     import { emailPasswordSignIn } from "$lib/firebase/auth.client";
-	import { goto } from "$app/navigation";
+	import { afterLogin } from "$lib/helpers/route.helper";
+	import { page } from "$app/stores";
 
     // @ts-ignore
     async function login(e) {
@@ -20,14 +21,17 @@
 				messageStore.showError('Password must be 6 characters or more.');
 				return;
 			}
+            // @ts-ignore
             const user = await emailPasswordSignIn(email, password);
-            goto('/');
+            await afterLogin($page.url);
             messageStore.showSucces('Logged in successfully!');
         }catch(error) {
+            // @ts-ignore
             if(error.code === 'auth/invalid-credential'){
                 messageStore.showError('Invalide email or password');
                 return;
             }
+            // @ts-ignore
             console.log(error.code);
 			messageStore.showError();
         }

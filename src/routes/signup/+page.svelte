@@ -1,8 +1,10 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import AuthForm from '$lib/components/Auth/AuthForm.svelte';
 	import LoginWithGoogle from '$lib/components/Auth/LoginWithGoogle.svelte';
 	import { emailPasswordSignUp } from '$lib/firebase/auth.client';
+	import { afterLogin } from '$lib/helpers/route.helper';
 	import messageStore from '$lib/stores/message.store';
 	// @ts-ignore
 	async function register(e) {
@@ -20,7 +22,7 @@
 				return;
 			}
 			const user = await emailPasswordSignUp(email, password);
-            goto('/');
+            await afterLogin($page.url);
 			messageStore.showSucces('Registered successfully!');
 		} catch (error) {
 			// @ts-ignore
