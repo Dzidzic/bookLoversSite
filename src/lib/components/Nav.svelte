@@ -70,7 +70,7 @@
 					    <a class:active = {currentPage == '/login'} class="nav-link" href="/login">Login</a>
 				    </li>
 				    <li class="nav-item">
-					    <a class:active = {currentPage == '/signup'} class="nav-link" href="/signup">Sign Up</a>
+					    <a class:active = {currentPage == '/signUp'} class="nav-link" href="/signup">Sign Up</a>
 				    </li>
                 {/if}  
 			</ul>

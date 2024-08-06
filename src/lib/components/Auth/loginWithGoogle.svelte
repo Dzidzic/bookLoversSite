@@ -7,6 +7,7 @@
     async function loginGoogle() {
         try {
             const user = await loginWithGoogle();
+            messageStore.showSucces('Logged in successfully!');
             goto('/');
         } catch (e) {
             // @ts-ignore
