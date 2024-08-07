@@ -1,4 +1,5 @@
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithPopup, signOut, sendPasswordResetEmail} from 'firebase/auth';
+import { json } from '@sveltejs/kit';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithPopup, signOut, sendPasswordResetEmail, getIdToken} from 'firebase/auth';
 
 export async function loginWithGoogle() {
     const auth = getAuth();
@@ -28,4 +29,20 @@ export async function emailPasswordSignIn(email, password) {
 // @ts-ignore
 export async function resetPassword(email) {
     await sendPasswordResetEmail(getAuth(), email);
+}
+
+// @ts-ignore
+export async function sendJWT(){
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if(user){
+        const token = await user.getIdToken(true);
+        await fetch('/token', {
+            method: 'POST',
+            body: JSON.stringify({ token, email: user.email})
+        })
+    }
+
+    return;
 }
