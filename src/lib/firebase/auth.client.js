@@ -9,6 +9,7 @@ export async function loginWithGoogle() {
 
 export async function logout() {
     await signOut(getAuth());
+    await fetch('/logout');
 }
 
 /**
