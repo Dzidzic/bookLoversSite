@@ -22,7 +22,7 @@
 				return;
 			}
 			const user = await emailPasswordSignUp(email, password);
-            await afterLogin($page.url);
+            await afterLogin($page.url, user.uid);
 			messageStore.showSucces('Registered successfully!');
 		} catch (error) {
 			// @ts-ignore

@@ -23,7 +23,7 @@
 			}
             // @ts-ignore
             const user = await emailPasswordSignIn(email, password);
-            await afterLogin($page.url);
+            await afterLogin($page.url, user.uid);
             messageStore.showSucces('Logged in successfully!');
         }catch(error) {
             // @ts-ignore

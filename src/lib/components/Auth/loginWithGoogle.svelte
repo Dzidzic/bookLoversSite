@@ -6,11 +6,11 @@
     async function loginGoogle() {
         try {
             const user = await loginWithGoogle();
-            await afterLogin($page.url);
+            await afterLogin($page.url, user.uid);
             messageStore.showSucces('Logged in successfully!');            
         } catch (e) {
             // @ts-ignore
-            if(e.code === 'auth.popup-closed-by-user'){
+            if(e.code === 'auth/popup-closed-by-user'){
                 return;
             }
             console.log(e);
