@@ -1,21 +1,23 @@
 import yup from 'yup';
 
 // @ts-ignore
-export default async function validate(formData) {
-    // @ts-ignore
-    console
-    
+export default async function validate(formData, edit = false) {
+    // @ts-ignore   
     const schema = yup.object({
-        title: yup.string().required('Book title is required').min(4).max(40),
+        title: yup.string().required('Book title is required').min(2).max(40),
         author: yup.string().required().max(100),
-        short_description: yup.string().required().min(2).max(100),
+        short_description: yup.string().required().min(2).max(300),
         description: yup.string().required().min(2).max(2000),
         small_picture: yup
             .mixed()
-            .required()
+            .nullable()
+            .test('fileRequired', 'Small Picture required', (value) => {
+                // @ts-ignore
+                return value.size !== 0 || edit;
+            })
             .test('fileType', 'The file must be an image', (value) => {
                 // @ts-ignore
-                if(value && value.type) {
+                if(value && value.type && value.size) {
                     // @ts-ignore
                     return ['image/png', 'image/jpeg'].includes(value.type);
                 }
@@ -31,10 +33,14 @@ export default async function validate(formData) {
             }),
         main_picture: yup
             .mixed()
-            .required()
+            .nullable()
+            .test('fileRequired', 'Main Picture required', (value) => {
+                // @ts-ignore
+                return value.size !== 0 || edit;
+            })
             .test('fileType', 'The file must be an image', (value) => {
                 // @ts-ignore
-                if(value && value.type) {
+                if(value && value.type && value.size) {
                     // @ts-ignore
                     return ['image/png', 'image/jpeg'].includes(value.type);
                 }

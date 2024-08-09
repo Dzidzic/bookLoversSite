@@ -1,8 +1,11 @@
 <script>
 // @ts-nocheck
+	
 
     /** @type {import('./$types').PageData} */
 	export let data;
+
+	$: imgUrl = data.book.main_picture;
 </script>
 
 <div class="row mt-3">
@@ -17,12 +20,12 @@
 </div>
 <div class="row">
 	<div class="col">
-		<img class="main-image" src={data.book.main_picture} alt={data.book.title} />
+		<img class="main-image" src="{imgUrl}?{Math.random()}" alt={data.book.title} />
 	</div>
 </div>
 <div class="row mt-3">
 	<div class="col">
-		<pre>{data.book.description}</pre>
+		<p>{data.book.description}</p>
 	</div>
 </div>
 

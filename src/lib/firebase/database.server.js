@@ -31,6 +31,31 @@ export async function addBook( book, userId ) {
 }
 
 // @ts-ignore
+export async function editBook(id, form, userId) {
+    const bookRef = await db.collection('books').doc(id);
+    let mainPicture = form.main_picture || null;
+    let smallPicture = form.small_picture || null;
+    
+    delete form.main_picture;
+    delete form.small_picture;
+    
+    await bookRef.update(form);
+
+    if(mainPicture && mainPicture.size){
+        
+        const mainPictureUrl = await saveFileToBuccket(mainPicture,
+            `${userId}/${bookRef.id}/main_picture`);
+        bookRef.update({main_picture: mainPictureUrl})       
+    }
+
+    if(smallPicture && mainPicture.size){        
+        const smallPictureUrl = await saveFileToBuccket(smallPicture,
+            `${userId}/${bookRef.id}/small_picture`); 
+        bookRef.update({small_picture: smallPictureUrl})   
+    }
+}
+
+// @ts-ignore
 export async function getBook(id) {
     const bookRef = await db.collection('books').doc(id).get();
 

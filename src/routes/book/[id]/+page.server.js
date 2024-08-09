@@ -8,8 +8,6 @@ export async function load({ params }) {
     if(!book){
         throw error(404, { message: 'Book nor found! '});
     }
-
-    console.log(book);
     
     return { book };
 }
