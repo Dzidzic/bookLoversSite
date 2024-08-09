@@ -8,7 +8,7 @@
         <input
             type="text"
             name="title"
-            class="form-control is-invalid"
+            class="form-control"
             id="title"
             value={form?.title || ''}
             placeholder="Book Title"
@@ -16,8 +16,6 @@
         />
         {#if form?.error_title}
             <div class="invalid-feedback">{form?.error_title}</div>
-        {:else}
-            <div class="invalid-feedback">test</div>
         {/if}    
     </div>
     <div class="mb-3">
@@ -73,7 +71,6 @@
             accept="image/*"
             name="main_picture"
             type="file"
-            value={form?.main_picture || ''}
             class:is-invalid={form?.error_main_picture}
         />
         {#if form?.error_main_picture}
@@ -88,7 +85,6 @@
             accept="image/*"
             name="small_picture"
             type="file"
-            value={form?.small_picture || ''}
             class:is-invalid={form?.error_small_picture}
         />
         {#if form?.error_small_picture}
