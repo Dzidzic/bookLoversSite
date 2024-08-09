@@ -1,31 +1,38 @@
 <script>
 // @ts-nocheck
-	
+
+	import Like from '$lib/components/Books/Like.svelte';
 
     /** @type {import('./$types').PageData} */
 	export let data;
+	let book = data.book;
 
-	$: imgUrl = data.book.main_picture;
+	$: imgUrl = book.main_picture;
 </script>
 
 <div class="row mt-3">
 	<div class="col">
-		<h1>Title: {data.book.title}</h1>
+		<h1>Title: {book.title}</h1>	
 	</div>
 </div>
 <div class="row">
 	<div class="col">
-		<h2>Author: {data.book.author}</h2>
+		<h2>Author: {book.author}</h2>
 	</div>
 </div>
 <div class="row">
 	<div class="col">
-		<img class="main-image" src="{imgUrl}?{Math.random()}" alt={data.book.title} />
+		<img class="main-image" src="{imgUrl}?{Math.random()}" alt={book.title} />			
 	</div>
 </div>
-<div class="row mt-3">
+<div class="row">
 	<div class="col">
-		<p>{data.book.description}</p>
+		<Like {book} class="float-end"/>
+	</div>
+</div>
+<div class="row mt-3">	
+	<div class="col">
+		<p>{book.description}</p>
 	</div>
 </div>
 

@@ -56,10 +56,48 @@ export async function editBook(id, form, userId) {
 }
 
 // @ts-ignore
-export async function getBook(id) {
+export async function getBook(id, userId = null) {
     const bookRef = await db.collection('books').doc(id).get();
 
     if(bookRef.exists){
-        return { id: bookRef.id, ...bookRef.data() }
+        const user = userId ? await getUser(userId) : null;
+        const likedBook = user?.bookIds?.includes(id) || false;
+        
+        return { id: bookRef.id, ...bookRef.data(), likedBook }
     }
+}
+
+// @ts-ignore
+export async function getUser(userId) {
+    const user = await db.collection('users').doc(userId).get();
+
+    return user?.data();
+}
+
+// @ts-ignore
+export async function toggleBookLike(bookId, userId) {
+    const bookDoc = db.collection('books').doc(bookId);
+    const userDoc = db.collection('users').doc(userId);
+
+    const user = await userDoc.get();
+    const userData = user.data();
+
+    // @ts-ignore
+    if(userData.bookIds && userData.bookIds.includes(bookId)){
+        await userDoc.update({
+            bookIds: firestore.FieldValue.arrayRemove(bookId)
+        })
+        await bookDoc.update({
+            likes: firestore.FieldValue.increment(-1)
+        })
+    }else{
+        await userDoc.update({
+            bookIds: firestore.FieldValue.arrayUnion(bookId)
+        })
+        await bookDoc.update({
+            likes: firestore.FieldValue.increment(1)
+        })
+    }
+
+    return await getBook(bookId, userId);
 }
