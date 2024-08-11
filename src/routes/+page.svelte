@@ -30,6 +30,14 @@
     <title>BookLovers - Home</title>
 </svelte:head>
 
+<div class="row m-3">
+    <div class="col">
+        <div class="text-center">
+            <h1>Latest books&nbsp;{data.page}/{data.pages}</h1>
+        </div>
+    </div>
+</div>
+
 {#each data.books as book (book.id)}
     <Book {book} />
 {/each}

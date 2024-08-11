@@ -1,7 +1,6 @@
 <script>
 	import Like from "./Books/Like.svelte";
     export let book;
-    console.log(book);
 </script>
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="row mt-2">
