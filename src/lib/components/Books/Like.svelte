@@ -1,6 +1,6 @@
 <script>
 // @ts-nocheck
-
+    import authStore from "$lib/stores/auth.store";
 	import messageStore from "$lib/stores/message.store";
 
     export let book;
@@ -8,6 +8,10 @@
     let submitting = false;
 
     async function toggleLike() {
+        if(!$authStore.isLoggedIn){
+            return;
+        }
+        
         try {
             submitting = true;
             const response = await fetch(`/like/${book.id}`);
@@ -36,6 +40,7 @@
         class="bi bi-arrow-through-heart-fill"
         viewBox="0 0 16 16"
         on:click={toggleLike}
+        class:notLoggedInd = {!$authStore.isLoggedIn}
     >
         <path
             fill-rule="evenodd"
@@ -54,6 +59,7 @@
         class="bi bi-arrow-through-heart"
         viewBox="0 0 16 16"
         on:click={toggleLike}
+        class:notLoggedInd = {!$authStore.isLoggedIn}
     >
         <path
             fill-rule="evenodd"
@@ -75,5 +81,8 @@ svg {
 }
 .like span {
     font-size: 20px;
+}
+.notLoggedInd{
+    cursor: not-allowed;
 }
 </style>

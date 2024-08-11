@@ -2,6 +2,7 @@ import pkg from 'firebase-admin';
 const {firestore} = pkg;
 import { db } from "./firebase.server";
 import { saveFileToBuccket } from './firestorage.server';
+import { PAGE_SIZE } from '$env/static/private';
 
 
 // @ts-ignore
@@ -53,6 +54,33 @@ export async function editBook(id, form, userId) {
             `${userId}/${bookRef.id}/small_picture`); 
         bookRef.update({small_picture: smallPictureUrl})   
     }
+}
+
+// @ts-ignore
+export async function getBooks(userId, page = 1) {
+    const user = userId ? await getUser(userId) : null;
+
+    const booksInDb = await db.collection('books').count().get();
+    const bookCount = booksInDb.data().count;
+        
+    const next = bookCount > (page * +PAGE_SIZE);
+    const prev = page > 1;
+    
+    const books = await db.collection('books')
+        .limit(+PAGE_SIZE)
+        .offset((page - 1) * +PAGE_SIZE)
+        .orderBy('created_at', 'desc').get();
+
+    const likedBooks = books.docs.map(d => {
+        const likedBook = user?.bookIds?.includes(d.id) || false;
+        return { ...d.data(), id: d.id, likedBook };
+    });
+
+    return {
+        books: likedBooks,
+        next,
+        prev
+    };
 }
 
 // @ts-ignore

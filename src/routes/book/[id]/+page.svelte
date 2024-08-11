@@ -27,7 +27,7 @@
 </div>
 <div class="row">
 	<div class="col">
-		<Like {book} class="float-end"/>
+		<Like {book}/>
 	</div>
 </div>
 <div class="row mt-3">	
