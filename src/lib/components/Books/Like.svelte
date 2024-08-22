@@ -2,6 +2,8 @@
 // @ts-nocheck
     import authStore from "$lib/stores/auth.store";
 	import messageStore from "$lib/stores/message.store";
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
 
     export let book;
     export let textAlign = 'right';
@@ -11,11 +13,14 @@
         if(!$authStore.isLoggedIn){
             return;
         }
+
+        console.log($authStore, '\n\n', $authStore.isLoggedIn);
         
         try {
             submitting = true;
             const response = await fetch(`/like/${book.id}`);
             book = await response.json();
+            dispatch('toggle_like', { id: book.id })
         } catch (error) {
             messageStore.showError();
         }
@@ -39,7 +44,7 @@
         fill="currentColor"
         class="bi bi-arrow-through-heart-fill"
         viewBox="0 0 16 16"
-        on:click={toggleLike}
+        on:click|stopPropagation={toggleLike}
         class:notLoggedInd = {!$authStore.isLoggedIn}
     >
         <path
@@ -58,7 +63,7 @@
         fill="currentColor"
         class="bi bi-arrow-through-heart"
         viewBox="0 0 16 16"
-        on:click={toggleLike}
+        on:click|stopPropagation={toggleLike}
         class:notLoggedInd = {!$authStore.isLoggedIn}
     >
         <path

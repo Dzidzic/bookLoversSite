@@ -5,7 +5,8 @@
 	import authStore from "$lib/stores/auth.store";
 	import messageStore from "$lib/stores/message.store";
 
-    let openNavbar = false;
+    export let isLoggedIn;
+	let openNavbar = false;
     $: currentPage = $page.url.pathname;
 
     function changeNavbar(){
@@ -40,7 +41,7 @@
 		</button>
 		<div class:show = {openNavbar} class="collapse navbar-collapse" id="navbarNav">             
             <ul class="navbar-nav">
-                {#if $authStore.isLoggedIn}
+                {#if isLoggedIn}
     				<li class="nav-item">
     					<a class:active = {currentPage == '/'} class="nav-link" aria-current="page" href="/">Home</a>
 				    </li>

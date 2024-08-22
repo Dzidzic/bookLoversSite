@@ -3,6 +3,7 @@ const {firestore} = pkg;
 import { db } from "./firebase.server";
 import { saveFileToBuccket } from './firestorage.server';
 import { PAGE_SIZE } from '$env/static/private';
+import { where } from 'firebase/firestore';
 
 
 // @ts-ignore
@@ -93,6 +94,38 @@ export async function getBook(id, userId = null) {
         
         return { id: bookRef.id, ...bookRef.data(), likedBook }
     }
+}
+
+// @ts-ignore
+export async function getUserBooks(userId) {
+    const user = await getUser(userId);
+    
+    const books = await db
+        .collection('books')
+        .orderBy('created_at', 'desc')
+        .where('user_id', '==', userId).get();
+
+    return books.docs.map(d => {
+        const likedBook = user?.bookIds?.includes(d.id) || false;
+
+        return { id: d.id, ...d.data(), likedBook}
+    });
+}
+
+// @ts-ignore
+export async function getLikedBooks(userId) {
+    const user = await getUser(userId);
+    const bookIds = user?.bookIds || [] 
+    
+    if (bookIds.length === 0){
+        return [];
+    }
+
+    const books = await db.collection('books').where(firestore.FieldPath.documentId(), 'in', bookIds).get();
+
+    return books.docs.map(d => {
+        return { id: d.id, ...d.data(), likedBook: true}
+    });
 }
 
 // @ts-ignore
