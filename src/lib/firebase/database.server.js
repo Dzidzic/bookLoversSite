@@ -114,7 +114,7 @@ export async function getUserBooks(userId) {
 // @ts-ignore
 export async function getLikedBooks(userId) {
     const user = await getUser(userId);
-    const bookIds = user?.bookIds || [] 
+    const bookIds = user?.bookIds || [];
     
     if (bookIds.length === 0){
         return [];
