@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import AuthForm from '$lib/components/Auth/AuthForm.svelte';
-	import LoginWithGoogle from '$lib/components/Auth/LoginWithGoogle.svelte';
+	import LoginWithGoogle from '$lib/components/Auth/loginWithGoogle.svelte';
 	import { emailPasswordSignUp } from '$lib/firebase/auth.client';
 	import { afterLogin } from '$lib/helpers/route.helper';
 	import messageStore from '$lib/stores/message.store';

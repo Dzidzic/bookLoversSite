@@ -1,6 +1,6 @@
 <script>
 	import AuthForm from "$lib/components/Auth/AuthForm.svelte";
-    import LoginWithGoogle from "$lib/components/Auth/LoginWithGoogle.svelte";
+    import LoginWithGoogle from "$lib/components/Auth/loginWithGoogle.svelte";
     import messageStore from "$lib/stores/message.store";
     import { emailPasswordSignIn } from "$lib/firebase/auth.client";
 	import { afterLogin } from "$lib/helpers/route.helper";
