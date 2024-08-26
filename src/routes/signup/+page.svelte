@@ -46,6 +46,7 @@
 <AuthForm on:submit={register} btnName="Sign Up!" />
 <hr />
 <LoginWithGoogle />
+
 <svelte:head>
 	<title>BookLovers - Sign Up</title>
 </svelte:head>
