@@ -3,8 +3,7 @@ const {firestore} = pkg;
 import { db } from "./firebase.server";
 import { saveFileToBuccket } from './firestorage.server';
 import { PAGE_SIZE } from '$env/static/private';
-import { where } from 'firebase/firestore';
-
+import admin from 'firebase-admin';
 
 // @ts-ignore
 export async function addBook( book, userId ) {
@@ -15,7 +14,7 @@ export async function addBook( book, userId ) {
         description: book.description,   
         author: book.author,
         user_id: userId,
-        created_at: firestore.Timestamp.now().seconds,
+        created_at: admin.firestore.Timestamp.now().seconds,
         likes: 0
     });
 
@@ -121,7 +120,7 @@ export async function getLikedBooks(userId) {
         return [];
     }
 
-    const books = await db.collection('books').where(firestore.FieldPath.documentId(), 'in', bookIds).get();
+    const books = await db.collection('books').where(admin.firestore.FieldPath.documentId(), 'in', bookIds).get();
 
     return books.docs.map(d => {
         return { id: d.id, ...d.data(), likedBook: true}
@@ -146,17 +145,17 @@ export async function toggleBookLike(bookId, userId) {
     // @ts-ignore
     if(userData.bookIds && userData.bookIds.includes(bookId)){
         await userDoc.update({
-            bookIds: firestore.FieldValue.arrayRemove(bookId)
+            bookIds: admin.firestore.FieldValue.arrayRemove(bookId)
         })
         await bookDoc.update({
-            likes: firestore.FieldValue.increment(-1)
+            likes: admin.firestore.FieldValue.increment(-1)
         })
     }else{
         await userDoc.update({
-            bookIds: firestore.FieldValue.arrayUnion(bookId)
+            bookIds: admin.firestore.FieldValue.arrayUnion(bookId)
         })
         await bookDoc.update({
-            likes: firestore.FieldValue.increment(1)
+            likes: admin.firestore.FieldValue.increment(1)
         })
     }
 
