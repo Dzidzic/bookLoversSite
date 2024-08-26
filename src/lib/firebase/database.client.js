@@ -3,11 +3,12 @@ import { db } from "./firebase.client";
 
 // @ts-ignore
 export async function setUser(userId) {
-    const users = collection(db, 'users');
+    const users = collection(db, 'users'); 
+    const likedBooks = await getDoc(doc(users, userId));
     
-    if(a.data().bookIds){
+    if(likedBooks.data().bookIds){
         await setDoc(doc(users, userId), {
-            bookIds: a.data().bookIds,
+            bookIds: likedBooks.data().bookIds,
             user_id: userId
         })
     }else{
