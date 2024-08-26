@@ -13,8 +13,6 @@
         if(!$authStore.isLoggedIn){
             return;
         }
-
-        console.log($authStore, '\n\n', $authStore.isLoggedIn);
         
         try {
             submitting = true;
